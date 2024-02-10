@@ -103,6 +103,18 @@
             cursor: pointer;
         }
 
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
@@ -146,7 +158,11 @@
                 </tbody>
             </table>
         </div>
+    </div>
 
+    <!-- Pop-up para mensajes -->
+    <div class="popup" id="popup">
+        Elemento <span id="popupMessage">agregado</span> exitosamente
     </div>
 
     <script>
@@ -156,4 +172,86 @@
         }
 
         function showTable(action) {
-            document.getElementById('tableCont
+            document.getElementById('tableContainer').style.display = 'block';
+            document.getElementById('inputContainer').style.display = 'none';
+
+            // Aquí puedes agregar lógica para cargar los datos de la base de datos
+            // y mostrarlos en la tabla. Por ahora, vamos a mostrar una fila de ejemplo.
+
+            // Limpia el contenido actual de la tabla
+            document.getElementById('tableBody').innerHTML = '';
+
+            // Ejemplo de una fila en la tabla
+            const tableRow = document.createElement('tr');
+            tableRow.innerHTML = `
+                <td>Nombre del Elemento</td>
+                <td class="action-buttons">
+                    <button class="action-button" onclick="deleteItem()">Eliminar</button>
+                    <button class="action-button" onclick="editItem()">Editar</button>
+                </td>
+            `;
+
+            // Agrega la fila a la tabla
+            document.getElementById('tableBody').appendChild(tableRow);
+        }
+
+        function addItem() {
+            // Aquí puedes agregar lógica para enviar el nuevo elemento a la base de datos.
+            // Por ahora, simplemente mostramos un mensaje en el pop-up.
+            const newItemName = document.getElementById('newItem').value;
+            document.getElementById('popupMessage').textContent = 'agregado';
+            document.getElementById('popup').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('popup').style.display = 'none';
+            }, 2000);
+
+            // Limpia el input después de agregar
+            document.getElementById('newItem').value = '';
+        }
+
+        function deleteItem() {
+            // Aquí puedes agregar lógica para eliminar el elemento seleccionado de la base de datos.
+            // Por ahora, simplemente mostramos un mensaje en el pop-up.
+            document.getElementById('popupMessage').textContent = 'eliminado';
+            document.getElementById('popup').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('popup').style.display = 'none';
+            }, 2000);
+        }
+
+        function editItem() {
+            // Muestra el input para editar el nombre del elemento
+            const inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.className = 'input-text';
+            inputField.id = 'editItemInput';
+            inputField.placeholder = 'Nuevo nombre';
+            document.getElementById('tableBody').appendChild(inputField);
+
+            // Muestra el botón de guardar
+            const saveButton = document.createElement('button');
+            saveButton.textContent = 'Guardar';
+            saveButton.className = 'add-button';
+            saveButton.onclick = function() {
+                saveEdit();
+            };
+            document.getElementById('tableBody').appendChild(saveButton);
+        }
+
+        function saveEdit() {
+            // Aquí puedes agregar lógica para guardar la edición del elemento en la base de datos.
+            // Por ahora, simplemente mostramos un mensaje en el pop-up.
+            document.getElementById('popupMessage').textContent = 'editado';
+            document.getElementById('popup').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('popup').style.display = 'none';
+            }, 2000);
+
+            // Remueve el input de edición y el botón de guardar después de guardar
+            document.getElementById('editItemInput').remove();
+            document.getElementById('tableBody').lastChild.remove();
+        }
+    </script>
+
+</body>
+</html>

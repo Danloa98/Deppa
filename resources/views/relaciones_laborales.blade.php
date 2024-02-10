@@ -61,28 +61,6 @@
             max-width: 100%;
             height: auto;
         }
-
-        /* Estilos para el submenú */
-        .sub-menu {
-            display: none;
-            position: absolute;
-            background-color: #333;
-            border-radius: 4px;
-            padding: 10px;
-            z-index: 1;
-            text-align: left;
-        }
-
-        .sub-menu a {
-            color: #fff;
-            text-decoration: none;
-            display: block;
-            margin: 5px 0;
-        }
-
-        .combo-box-container:hover .sub-menu {
-            display: block;
-        }
     </style>
 </head>
 <body>
@@ -90,32 +68,56 @@
     <div class="menu-container">
         <div class="combo-box-container">
             <label for="menu">Menú:</label>
-            <select id="menu" name="menu" class="combo-box">
+            <select id="menu" name="menu" class="combo-box" onchange="redirectToSelected()">
                 <option value="empleado">Empleado</option>
                 <option value="estadisticas">Estadísticas</option>
                 <option value="expedientes">Expedientes</option>
                 <option value="puestos_departamentos">Puestos y Departamentos</option>
                 <option value="reportes">Reportes</option>
                 <optgroup label="Admin. Sistema">
-                    <option value="catalogos">Catalogos</option>
+                    <option value="catalogos">Catálogos</option>
                 </optgroup>
             </select>
-            <!-- Submenú para la opción "Admin. Sistema" -->
-            <div class="sub-menu">
-                <a href="#">Catalogos</a>
-            </div>
         </div>
         <div class="logo">
-            <img src="{{ asset('path/to/institution_logo.png') }}" alt="Logo Institución">
+            <img src="{{ asset('images/deppa.png') }}" alt="Logo Institución">
         </div>
     </div>
 
     <div class="content-container">
         <!-- Contenido del módulo de Relaciones Laborales va aquí -->
         <div class="image-container">
-            <img src="{{ asset('path/to/module_image.png') }}" alt="Imagen Módulo">
+            <img src="{{ asset('images/logo1.png') }}" alt="Imagen Módulo">
         </div>
     </div>
+
+    <script>
+        function redirectToSelected() {
+            var selectedOption = document.getElementById('menu').value;
+            var url;
+
+            // Define las rutas correspondientes para cada opción del combobox
+            switch (selectedOption) {
+                case 'catalogos':
+                    url = '{{ route("catalogos") }}';
+                    break;
+                case 'puestos_departamentos':
+                    url = '{{ route("departamentos") }}';
+                    break;
+                case 'estadisticas':
+                    url = '{{ route("estadisticas") }}';
+                    
+                    break;
+                default:
+                    // Definir una ruta por defecto o manejar el caso no definido
+                    url = '{{ route("dashboard") }}';
+                    break;
+            }
+
+            // Redirecciona a la URL correspondiente
+            window.location.href = url;
+        }
+    </script>
 
 </body>
 </html>
